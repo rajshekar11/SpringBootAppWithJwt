@@ -6,6 +6,7 @@ import com.masai.exception.MerchantException;
 import com.masai.exception.ProductException;
 import com.masai.model.Merchant;
 import com.masai.model.Product;
+import com.masai.model.SignInDTO;
 
 public interface MerchantService {
 
@@ -13,7 +14,7 @@ public interface MerchantService {
 	
 	public Merchant getMerchentByEmail(String email)throws MerchantException;
 	
-	public Merchant signIn()throws MerchantException;
+	public Merchant signIn(SignInDTO emailpass)throws MerchantException;
 	
 	public List<Merchant> getAllMerchant()throws MerchantException;
 	

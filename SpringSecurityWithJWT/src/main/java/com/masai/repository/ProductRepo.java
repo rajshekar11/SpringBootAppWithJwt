@@ -7,4 +7,5 @@ import com.masai.model.Product;
 @Repository
 public interface ProductRepo extends JpaRepository<Product, Integer>{
 
+	
 }
