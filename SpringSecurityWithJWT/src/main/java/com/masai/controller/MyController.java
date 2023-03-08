@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,6 +20,7 @@ import com.masai.exception.ProductException;
 import com.masai.model.Merchant;
 import com.masai.model.Product;
 import com.masai.model.SignInDTO;
+import com.masai.repository.MerchantRepo;
 import com.masai.service.MerchantService;
 
 @RestController
@@ -25,6 +28,9 @@ public class MyController {
 
 	@Autowired
 	private MerchantService ms;
+	
+	@Autowired
+	private MerchantRepo mrep;
 	
 	@PostMapping("/merchant")
 	public ResponseEntity<Merchant> addMerchant(@RequestBody Merchant me){
@@ -39,9 +45,14 @@ public class MyController {
 	}
 	
 	@GetMapping("/signIn")
-	public ResponseEntity<Merchant> signIn(@RequestBody SignInDTO emailpass)throws MerchantException{
-		Merchant me=ms.signIn(emailpass);
-		return new ResponseEntity<>(me,HttpStatus.OK);
+	public ResponseEntity<Merchant> signIn(Authentication auth)throws MerchantException{
+		Merchant merchant= mrep.findByEmail(auth.getName()).orElseThrow(() -> new BadCredentialsException("Invalid Username or password"));
+		
+		 //to get the token in body, pass HttpServletResponse inside this method parameter 
+		// System.out.println(response.getHeaders(SecurityConstants.JWT_HEADER));
+		 
+		 
+		 return new ResponseEntity<>(merchant, HttpStatus.ACCEPTED);
 	}
 	@GetMapping("/merchant/all")
 	public ResponseEntity<List<Merchant>> getAllMerchant()throws MerchantException{
