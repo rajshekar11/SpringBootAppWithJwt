@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;import org.springframework.http.HttpS
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,8 +33,12 @@ public class MyController {
 	@Autowired
 	private MerchantRepo mrep;
 	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	@PostMapping("/merchant")
 	public ResponseEntity<Merchant> addMerchant(@RequestBody Merchant me){
+		me.setPassword(passwordEncoder.encode(me.getPassword()));
 		Merchant saved= ms.registerMerchant(me);
 		return new ResponseEntity<>(saved,HttpStatus.ACCEPTED);
 	}

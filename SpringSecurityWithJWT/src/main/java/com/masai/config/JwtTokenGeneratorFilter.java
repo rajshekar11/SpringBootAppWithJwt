@@ -3,6 +3,7 @@ package com.masai.config;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.HashSet;
@@ -29,7 +30,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 		
-		System.out.println("inside doFilter....");
+		
 		
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (null != authentication) {
@@ -42,7 +43,7 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
                     .claim("username", authentication.getName())
                     .claim("authorities", populateAuthorities(authentication.getAuthorities()))
                     .setIssuedAt(new Date())
-                    .setExpiration(new Date(new Date().getTime()+ 30000000)) // expiration time of 8 hours
+                    .setExpiration(new Date(new Date().getTime()+ 30000000)) 
                     .signWith(key).compact();
             
             response.setHeader(SecurityConstants.JWT_HEADER, jwt);
@@ -84,4 +85,3 @@ public class JwtTokenGeneratorFilter extends OncePerRequestFilter {
 	
 
 }
-

@@ -13,6 +13,8 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 @Configuration
 public class AppConfig {
 
+	
+	
 	@Bean
 	public SecurityFilterChain springSecurityConfiguration(HttpSecurity http) throws Exception {
 
@@ -21,7 +23,8 @@ public class AppConfig {
 		.and()
 		.csrf().disable()
 		.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.POST, "/merchant").permitAll()
+		.requestMatchers(HttpMethod.POST, "/customers").permitAll()
+		.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
 		.anyRequest().authenticated().and()
 		.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
 		.addFilterBefore(new JwtTokenValidatorFilter(), BasicAuthenticationFilter.class)

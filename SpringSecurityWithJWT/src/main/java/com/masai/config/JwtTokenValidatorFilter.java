@@ -29,6 +29,8 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 			throws ServletException, IOException {
 	
 		
+		//Authorization : Bearear token
+		
 		String jwt= request.getHeader(SecurityConstants.JWT_HEADER);
 
 		
@@ -49,7 +51,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 				
 				String username= String.valueOf(claims.get("username"));
 				
-				
+				//it returns the comma seperated all the authorities
 				String authorities= (String)claims.get("authorities");		
 				
 				List<GrantedAuthority> auths = AuthorityUtils.commaSeparatedStringToAuthorityList(authorities);
@@ -83,7 +85,7 @@ public class JwtTokenValidatorFilter extends OncePerRequestFilter {
 	@Override
 	protected boolean shouldNotFilter(HttpServletRequest request) throws ServletException {
 	
-		return !request.getServletPath().equals("/signIn");
+		return request.getServletPath().equals("/signIn");
 	}
 
 }
