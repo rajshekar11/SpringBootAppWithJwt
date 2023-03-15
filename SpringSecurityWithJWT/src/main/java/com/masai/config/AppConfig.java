@@ -23,7 +23,7 @@ public class AppConfig {
 		.and()
 		.csrf().disable()
 		.authorizeHttpRequests()
-		.requestMatchers(HttpMethod.POST, "/customers").permitAll()
+		.requestMatchers(HttpMethod.POST, "/merchant").permitAll()
 		.requestMatchers("/swagger-ui*/**","/v3/api-docs/**").permitAll()
 		.anyRequest().authenticated().and()
 		.addFilterAfter(new JwtTokenGeneratorFilter(), BasicAuthenticationFilter.class)
